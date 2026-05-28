@@ -6,7 +6,10 @@ export const COLLECTIONS = {
   syncState: "sync_state",
   syncEvents: "sync_events",
   deadLetterEvents: "dead_letter_events",
-  materialHistory: "material_history",ED_INDEXES = {
+  materialHistory: "material_history",
+};
+
+export const REQUIRED_INDEXES = {
   users: [
     { keys: { email: 1 }, options: { unique: true } },
     { keys: { walletAddressLower: 1 }, options: { sparse: true } },
@@ -31,14 +34,16 @@ export const COLLECTIONS = {
   dead_letter_events: [
     { keys: { _id: 1 }, options: { unique: true } },
     { keys: { status: 1 } },
-  dead_letter_events: [
-    { keys: { _id: 1 }, options: { unique: true } },
-    { keys: { status: 1 } },
     { keys: { retryCount: 1 } },
   ],
   material_history: [
     { keys: { materialId: 1, updatedAt: -1 } },
-    { keys: { updatedBy: 1 } }, now instanceof Date ? now : new Date(now);
+    { keys: { updatedBy: 1 } },
+  ],
+};
+
+export function applyTimestamps(record, now = new Date()) {
+  const timestamp = now instanceof Date ? now : new Date(now);
   return {
     ...record,
     createdAt: record.createdAt || timestamp,
